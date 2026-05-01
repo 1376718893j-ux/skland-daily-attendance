@@ -52,3 +52,12 @@ jobs:
           SKLAND_NOTIFICATION_URLS: ${{ secrets.SKLAND_NOTIFICATION_URLS }}
           SKLAND_MAX_RETRIES: ${{ secrets.MAX_RETRIES }}
           SKLAND_ANONYMOUS: ${{ secrets.SKLAND_ANONYMOUS }}
+
+      - name: Send notification via ServerChan
+        if: always()
+        env:
+          SENDKEY: ${{ secrets.SERVERCHAN_SENDKEY }}
+        run: |
+          curl -s -X POST "https://sctapi.ftqq.com/${SENDKEY}.send" \
+            -d "title=森空岛签到结果" \
+            -d "desp=签到任务已执行，详情见：https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
